@@ -52,5 +52,6 @@ jobs:
         tag_name: "latest"
         prerelease: true
         name: "Development Build"
+        generate_release_notes: true
         files: |
           build/bin/x64/Release/ocgcore.dll
