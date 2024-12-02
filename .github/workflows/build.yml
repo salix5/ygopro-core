@@ -47,11 +47,6 @@ jobs:
 
     - name: GitHub Release
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v2.1.0
-      with:
-        tag_name: "latest"
-        prerelease: true
-        name: "Development Build"
-        generate_release_notes: true
-        files: |
-          build/bin/x64/Release/ocgcore.dll
+      run: gh release create latest ./build/bin/x64/Release/ocgcore.dll -p -t "Development Build" --generate-notes
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
