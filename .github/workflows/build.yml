@@ -48,7 +48,7 @@ jobs:
     - name: GitHub Release
       if: github.event_name == 'push'
       run: |
-        gh release delete latest -y
+        gh release delete latest --cleanup-tag -y
         gh release create latest ./build/bin/x64/Release/ocgcore.dll -p -t "Development Build" --generate-notes
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
