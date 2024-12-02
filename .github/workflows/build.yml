@@ -35,18 +35,23 @@ jobs:
 
     - name: Build
       run: |
+        msbuild build\ocgcoredll.sln /t:Build /p:"Configuration=Release;Platform=Win32"
         msbuild build\ocgcoredll.sln /t:Build /p:"Configuration=Release;Platform=x64"
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         path: |
+          build\bin\x32\Release\ocgcore.dll
           build\bin\x64\Release\ocgcore.dll
 
     - name: GitHub Release
       if: github.event_name == 'push'
-      run: |
-        gh release delete latest --cleanup-tag -y
-        gh release create latest ./build/bin/x64/Release/ocgcore.dll -p -t "Development Build" --generate-notes
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: salix5/action-automatic-releases@node20
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: true
+        title: "Development Build"
+        files: |
+          build/bin/x64/Release/ocgcore.dll
